@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
-<title>길을 잇고, 길을 짓다 — 2026 국가무형유산 이수자 기획전시</title>
+<title>결, 시간의 흐름 속에서 — 2025 국가무형유산 이수자 기획전시</title>
 <style>
   :root{
     --bg:#111111;
@@ -49,6 +49,7 @@
   }
   canvas{
     max-width:96vw; box-shadow:0 4px 18px rgba(0,0,0,0.5); background:#fff;
+    image-rendering:auto;
   }
   .pageNum{
     font-size:11px; color:var(--muted);
@@ -68,7 +69,7 @@
 <body>
 
 <div id="topbar">
-  <div id="title">길을 잇고, 길을 짓다</div>
+  <div id="title">결, 시간의 흐름 속에서</div>
   <div id="pageControls">
     <button id="prevBtn" aria-label="이전 페이지">‹</button>
     <input id="pageInput" type="number" min="1" value="1">
@@ -120,15 +121,16 @@
     const ctx = canvas.getContext("2d");
 
     const dpr = window.devicePixelRatio || 1;
-    const cssWidth = Math.min(window.innerWidth * 0.96, 900);
+    const cssWidth = Math.min(window.innerWidth * 0.96, 1600);
     const baseViewport = page.getViewport({ scale: 1 });
-    const scale = (cssWidth / baseViewport.width) * dpr;
+    const sharpness = 1.5; // 확대해도 흐려지지 않도록 여유 해상도를 더 얹음
+    const scale = (cssWidth / baseViewport.width) * dpr * sharpness;
     const viewport = page.getViewport({ scale });
 
     canvas.width = viewport.width;
     canvas.height = viewport.height;
-    canvas.style.width = (viewport.width / dpr) + "px";
-    canvas.style.height = (viewport.height / dpr) + "px";
+    canvas.style.width = (viewport.width / (dpr * sharpness)) + "px";
+    canvas.style.height = (viewport.height / (dpr * sharpness)) + "px";
 
     await page.render({ canvasContext: ctx, viewport }).promise;
   }
