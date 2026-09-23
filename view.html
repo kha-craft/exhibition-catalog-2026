@@ -47,7 +47,7 @@
   // URL에서 ?p=06 형태의 페이지 번호를 읽어 해당 이미지 로드
   const params = new URLSearchParams(location.search);
   const pageNum = params.get("p") || "06";
-  document.getElementById("pageImg").src = "images/page-" + pageNum + ".jpg";
+  document.getElementById("pageImg").src = "pages/page-" + pageNum + ".jpg";
 
   const blocked = document.getElementById("blocked");
   function showBlocked(){
