@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0">
+<title>결, 시간의 흐름 속에서</title>
+<style>
+  *{ box-sizing:border-box; }
+  html,body{
+    margin:0; padding:0; background:#111; height:100%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    overflow:hidden;
+  }
+  #wrap{
+    width:100%; height:100%;
+    display:flex; align-items:center; justify-content:center;
+    padding:8px;
+  }
+  #pageImg{
+    max-width:96vw; max-height:96vh;
+    -webkit-user-select:none; user-select:none;
+    -webkit-user-drag:none;
+    -webkit-touch-callout:none; /* iOS 길게 눌러 저장 메뉴 차단 */
+    pointer-events:auto;
+  }
+  #msg{
+    position:fixed; bottom:14px; left:0; right:0; text-align:center;
+    color:#777; font-size:11px; letter-spacing:0.02em;
+  }
+  #blocked{
+    position:fixed; inset:0; background:rgba(0,0,0,0.85); color:#eee;
+    display:none; align-items:center; justify-content:center; font-size:14px;
+    z-index:50; text-align:center; padding:20px;
+  }
+</style>
+</head>
+<body oncontextmenu="return false;">
+
+<div id="wrap">
+  <img id="pageImg" src="" alt="전시 도록" draggable="false">
+</div>
+<div id="msg">결, 시간의 흐름 속에서 · 2025 국가무형유산 이수자 기획전시</div>
+<div id="blocked">저장 및 복사는 지원하지 않습니다</div>
+
+<script>
+  // URL에서 ?p=06 형태의 페이지 번호를 읽어 해당 이미지 로드
+  const params = new URLSearchParams(location.search);
+  const pageNum = params.get("p") || "06";
+  document.getElementById("pageImg").src = "images/page-" + pageNum + ".jpg";
+
+  const blocked = document.getElementById("blocked");
+  function showBlocked(){
+    blocked.style.display = "flex";
+    setTimeout(() => { blocked.style.display = "none"; }, 1200);
+  }
+
+  // 우클릭 방지
+  document.addEventListener("contextmenu", e => { e.preventDefault(); showBlocked(); });
+
+  // 드래그 방지
+  document.addEventListener("dragstart", e => { e.preventDefault(); });
+
+  // Ctrl+S / Cmd+S, Ctrl+P / Cmd+P, F12, Ctrl+Shift+I 등 저장/개발자도구 단축키 방지
+  document.addEventListener("keydown", e => {
+    const k = e.key.toLowerCase();
+    if((e.ctrlKey || e.metaKey) && (k === "s" || k === "p" || k === "c" || k === "u")){
+      e.preventDefault(); showBlocked();
+    }
+    if(e.key === "F12" || ((e.ctrlKey || e.metaKey) && e.shiftKey && k === "i")){
+      e.preventDefault();
+    }
+  });
+
+  // 텍스트 선택 방지 (이미지라 큰 의미는 없지만 UI 보호)
+  document.addEventListener("selectstart", e => { e.preventDefault(); });
+</script>
+</body>
+</html>
